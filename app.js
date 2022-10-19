@@ -21,6 +21,21 @@ app.use("/api", indexRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
+const dashboardRoutes = require("./routes/dashboard.routes");
+app.use("/dashboard", dashboardRoutes);
+
+const profileRoutes = require("./routes/profile.routes");
+app.use("/profile", profileRoutes);
+
+const postRoutes = require("./routes/post.routes");
+app.use("/my-posts", postRoutes);
+
+const orderRoutes = require("./routes/order.routes");
+app.use("/my-orders", orderRoutes);
+
+const sellerRoutes = require("./routes/seller.routes");
+app.use("/seller", sellerRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
