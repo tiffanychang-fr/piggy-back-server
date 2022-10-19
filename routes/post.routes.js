@@ -21,3 +21,5 @@ postRouter.post("/edit/:postId", (req, res) => {
   const message = "You receive a response from the server";
   res.json({ status: "ok", message: message });
 });
+
+module.exports = postRouter;
