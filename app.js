@@ -36,6 +36,9 @@ app.use("/my-orders", orderRoutes);
 const sellerRoutes = require("./routes/seller.routes");
 app.use("/seller", sellerRoutes);
 
+const stripeRoutes = require("./routes/stripe.routes");
+app.use("/", stripeRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 

@@ -30,6 +30,9 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    stripe_account_id: "",
+    stripe_seller: {},
+    stripeSession: {},
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
