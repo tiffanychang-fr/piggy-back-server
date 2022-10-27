@@ -7,16 +7,18 @@ const postRouter = Router();
 
 // GET /my-posts - Render user posts history
 postRouter.get("/", (req, res) => {
-  const message = "You receive a response from the server";
-  res.json({ status: "ok", message: message });
+  // const message = "You receive a response from the server";
+  // res.json({ status: "ok", message: message });
+  const userId = req.query.userId;
+  console.log(userId);
 
-  const username = req.body.username;
+  console.log(`id from get route:`, userId);
 
-  console.log(`username from the get request my-posts:`, username);
-  PostModel.find({ username })
+  PostModel.find({ postBy: userId })
     .then((allPosts) => {
       console.log(`all the posts from the get route of post:`, allPosts);
-      // return res.json(allPosts);
+
+      return res.json(allPosts);
     })
     .catch((err) => {
       console.log(err);
@@ -25,10 +27,6 @@ postRouter.get("/", (req, res) => {
 
 // POST /my-posts/create - create a post that asks for help from locals
 postRouter.post("/create", (req, res) => {
-  const message =
-    "You receive a response from the server, your post is created";
-  res.json({ status: "ok", message: message });
-
   const { title, description, city, country, budget } = req.body.requestBody;
   const username = req.body.username;
 
