@@ -9,6 +9,18 @@ const postRouter = Router();
 postRouter.get("/", (req, res) => {
   const message = "You receive a response from the server";
   res.json({ status: "ok", message: message });
+
+  const username = req.body.username;
+
+  console.log(`username from the get request my-posts:`, username);
+  PostModel.find({ username })
+    .then((allPosts) => {
+      console.log(`all the posts from the get route of post:`, allPosts);
+      // return res.json(allPosts);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 // POST /my-posts/create - create a post that asks for help from locals
@@ -16,6 +28,7 @@ postRouter.post("/create", (req, res) => {
   const message =
     "You receive a response from the server, your post is created";
   res.json({ status: "ok", message: message });
+
   const { title, description, city, country, budget } = req.body.requestBody;
   const username = req.body.username;
 
@@ -38,7 +51,7 @@ postRouter.post("/create", (req, res) => {
       if (!foundUser) {
         console.log("not working from this page");
         return res.status(400).json({
-          // errorMessage: "There is not such user",
+          errorMessage: "There is not such user",
         });
       }
       PostModel.create({
@@ -50,7 +63,8 @@ postRouter.post("/create", (req, res) => {
         postBy: foundUser._id,
       })
         .then((createdPost) => {
-          console.log(createdPost);
+          console.log(`createdPost data:`, createdPost);
+          return res.json(createdPost);
         })
         .catch((err) => {
           console.log(err);
