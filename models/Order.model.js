@@ -2,22 +2,11 @@ const { Schema, model } = require("mongoose");
 
 const orderSchema = new Schema(
   {
-    post: {
+    offer: {
       type: Schema.Types.ObjectId,
-      ref: "Post",
+      ref: "Offer",
     },
-    sellerMessage: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    isConfirmed: {
-      type: Boolean,
-      default: false,
-    },
+    session: {},
     orderedBy: {
       type: Schema.Types.ObjectId,
       ref: "User",

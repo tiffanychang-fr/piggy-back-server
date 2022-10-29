@@ -60,4 +60,44 @@ stripeRouter.post("/get-account-status", async (req, res) => {
   res.json(updatedUser);
 });
 
+// POST /get-account-balance
+stripeRouter.post("/get-account-balance", async (req, res) => {
+  const { username } = req.body;
+  const user = await User.findOne({ username });
+  try {
+    const balance = await stripe.balance.retrieve({
+      stripeAccount: user.stripe_account_id,
+    });
+
+    res.json(balance);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// POST /payout-setting
+stripeRouter.post("/payout-setting", async (req, res) => {
+  const { username } = req.body;
+  try {
+    const user = await User.findOne({ username });
+    const loginLink = await stripe.accounts.createLoginLink(
+      user.stripe_account_id
+    );
+    // console.log("Login link:", loginLink);
+    res.json(loginLink);
+  } catch (error) {
+    console.log("Stripe payout setting error:", error);
+  }
+});
+
+// POST /stripe-session-id
+stripeRouter.post("/stripe-session-id", async (req, res) => {
+  console.log("hit stripe session id", req.body.orderId);
+  try {
+    res.json(req.body.orderId);
+  } catch (error) {
+    console.log("Stripe payout process error:", error);
+  }
+});
+
 module.exports = stripeRouter;
