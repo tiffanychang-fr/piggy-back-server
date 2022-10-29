@@ -7,17 +7,10 @@ const postRouter = Router();
 
 // GET /my-posts - Render user posts history
 postRouter.get("/", (req, res) => {
-  // const message = "You receive a response from the server";
-  // res.json({ status: "ok", message: message });
   const userId = req.query.userId;
-  console.log(userId);
-
-  console.log(`id from get route:`, userId);
 
   PostModel.find({ postBy: userId })
     .then((allPosts) => {
-      console.log(`all the posts from the get route of post:`, allPosts);
-
       return res.json(allPosts);
     })
     .catch((err) => {
@@ -45,9 +38,7 @@ postRouter.post("/create", (req, res) => {
 
   UserModel.findOne({ username })
     .then((foundUser) => {
-      console.log(`foundUser:`, foundUser);
       if (!foundUser) {
-        console.log("not working from this page");
         return res.status(400).json({
           errorMessage: "There is not such user",
         });
@@ -61,7 +52,6 @@ postRouter.post("/create", (req, res) => {
         postBy: foundUser._id,
       })
         .then((createdPost) => {
-          console.log(`createdPost data:`, createdPost);
           return res.json(createdPost);
         })
         .catch((err) => {
@@ -72,10 +62,56 @@ postRouter.post("/create", (req, res) => {
       console.log(err);
     });
 });
-// POST /my-posts/edit/:postId - edit a single post
-postRouter.post("/edit/:postId", (req, res) => {
+//GET /my-posts/details/:postId
+postRouter.get(`/details/:postId`, (req, res) => {
+  console.log(`hello from the details page`);
+});
+
+// GET /my-posts/edit/:postId - edit a single post
+postRouter.get(`/edit/:postId`, (req, res) => {
   const message = "You receive a response from the server";
-  res.json({ status: "ok", message: message });
+  res.status(200).json({ status: "ok", message: message });
+});
+
+// POST /my-posts/edit/:postId - edit a single post
+postRouter.post(`/edit/:postId`, (req, res) => {
+  const { title, description, city, country, budget } = req.body;
+  const { postId } = req.params;
+
+  if (
+    title === "" ||
+    description === "" ||
+    country === "" ||
+    city === "" ||
+    budget === 0
+  ) {
+    res.status(400).json({
+      message: "Provide username, email, password, city, country, phone number",
+    });
+    return;
+  }
+
+  PostModel.findByIdAndUpdate(
+    postId,
+    { title, description, country, city, budget },
+    { new: true }
+  )
+    .then((updatedPost) => {
+      if (!updatedPost) {
+        return res.status(404).json({
+          message: `Found no post to update`,
+        });
+      }
+      const { title, description, country, city, budget } = updatedPost; // add the key's to the updated
+      const payLoad = { title, description, country, city, budget };
+
+      res.json({
+        payLoad: payLoad,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 module.exports = postRouter;
