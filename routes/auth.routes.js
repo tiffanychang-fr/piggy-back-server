@@ -134,7 +134,7 @@ router.post("/login", (req, res, next) => {
         } = foundUser;
 
         // Create an object that will be set as the token payload
-        const payload = { _id, username, email, city, country, phoneNumber };
+        const payload = { _id, username, email, city, country, phoneNumber, stripe_account_id,stripe_seller, stripeSession};
 
         // Create a JSON Web Token and sign it
         const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
