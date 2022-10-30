@@ -117,9 +117,11 @@ postRouter.post(`/edit/:postId`, (req, res) => {
 //DELETE /my-posts/delete/:postId
 postRouter.delete("/delete/:postId", (req, res) => {
   console.log(`You have reached the delete route, please be carefull`);
-  PostModel.findByIdAndDelete()
-    .then((response) => {
-      console.log(response);
+  PostModel.findByIdAndDelete(req.params.postId)
+    .then(() => {
+      res
+        .status(200)
+        .json({ message: "Your post has been deleted succesfully." });
     })
     .catch((err) => {
       console.log(err);
