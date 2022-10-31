@@ -32,8 +32,8 @@ offerRouter.get("/get-all-offers-by-post", (req, res) => {
 // GET /create-offer/:postId - Make an offer to a post
 offerRouter.get("/create-offer/:postId", (req, res) => {
   // Validation: if logged in user is post owner, then cannot make an offer to him/ herself
-  const { userId, postByUserId } = req.query;
-  if (userId === postByUserId) return;
+  // const { userId, postByUserId } = req.query;
+  // if (userId === postByUserId) return;
   res.json({ status: "ok" });
 });
 
