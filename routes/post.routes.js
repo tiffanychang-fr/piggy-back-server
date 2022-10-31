@@ -5,6 +5,11 @@ const PostModel = require("../models/Post.model");
 const UserModel = require("../models/User.model");
 const postRouter = Router();
 
+//GET /all-posts - render all posts for non authenticated users
+postRouter.get("/all-posts", (req, res) => {
+  console.log(`hello form the all posts route`);
+});
+
 // GET /my-posts - Render user posts history
 postRouter.get("/", (req, res) => {
   const userId = req.query.userId;
