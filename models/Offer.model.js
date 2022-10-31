@@ -14,6 +14,10 @@ const offerSchema = new Schema(
       type: Number,
       required: true,
     },
+    receivedBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
     proposedBy: {
       type: Schema.Types.ObjectId,
       ref: "User",
