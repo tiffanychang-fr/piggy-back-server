@@ -74,9 +74,24 @@ postRouter.post("/my-posts/create", (req, res) => {
       console.log(err);
     });
 });
+
 //GET /my-posts/details/:postId
-postRouter.get(`/my-posts/details/:postId`, (req, res) => {
+postRouter.get(`/details/:postId`, (req, res) => {
   console.log(`hello from the details page`);
+});
+
+// GET /my-posts/edit/details/:postId
+postRouter.get(`/my-posts/edit/details/:postId`, (req, res) => {
+  PostModel.findById(req.params.postId).then((maybePost) => {
+    // validate if post does exist
+    if (!maybePost) {
+      res
+        .status(400)
+        .json(`message: Your post does not excist, please create a real post`);
+    }
+
+    res.json(maybePost);
+  });
 });
 
 // GET /my-posts/edit/:postId - edit a single post
