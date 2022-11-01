@@ -28,7 +28,7 @@ const profileRoutes = require("./routes/profile.routes");
 app.use("/profile", profileRoutes);
 
 const postRoutes = require("./routes/post.routes");
-app.use("/my-posts", postRoutes);
+app.use("/", postRoutes);
 
 const orderRoutes = require("./routes/order.routes");
 app.use("/my-orders", orderRoutes);

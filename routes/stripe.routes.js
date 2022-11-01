@@ -164,11 +164,14 @@ stripeRouter.post("/stripe-success", async (req, res) => {
         // if order exist, send success true
         res.json({ success: true });
       } else {
+        const offer = await OfferModel.findById(offerId).populate("proposedBy");
+
         // else create new order and send success true
         let newOrder = await new OrderModel({
           offer: offerId,
           session,
           orderedBy: userId,
+          soldBy: offer.proposedBy._id,
         }).save();
 
         // remove user's stripeSession

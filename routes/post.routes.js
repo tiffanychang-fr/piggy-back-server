@@ -7,11 +7,18 @@ const postRouter = Router();
 
 //GET /all-posts - render all posts for non authenticated users
 postRouter.get("/all-posts", (req, res) => {
-  console.log(`hello form the all posts route`);
+  PostModel.find()
+    .populate("postBy")
+    .then((allPosts) => {
+      return res.json(allPosts);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 // GET /my-posts - Render user posts history
-postRouter.get("/", (req, res) => {
+postRouter.get("/my-posts", (req, res) => {
   const userId = req.query.userId;
 
   PostModel.find({ postBy: userId })
@@ -24,7 +31,7 @@ postRouter.get("/", (req, res) => {
 });
 
 // POST /my-posts/create - create a post that asks for help from locals
-postRouter.post("/create", (req, res) => {
+postRouter.post("/my-posts/create", (req, res) => {
   const { title, description, city, country, budget } = req.body.requestBody;
   const username = req.body.username;
 
@@ -68,18 +75,18 @@ postRouter.post("/create", (req, res) => {
     });
 });
 //GET /my-posts/details/:postId
-postRouter.get(`/details/:postId`, (req, res) => {
+postRouter.get(`/my-posts/details/:postId`, (req, res) => {
   console.log(`hello from the details page`);
 });
 
 // GET /my-posts/edit/:postId - edit a single post
-postRouter.get(`/edit/:postId`, (req, res) => {
+postRouter.get(`/my-posts/edit/:postId`, (req, res) => {
   const message = "You receive a response from the server";
   res.status(200).json({ status: "ok", message: message });
 });
 
 // POST /my-posts/edit/:postId - edit a single post
-postRouter.post(`/edit/:postId`, (req, res) => {
+postRouter.post(`/my-posts/edit/:postId`, (req, res) => {
   const { title, description, city, country, budget } = req.body;
   const { postId } = req.params;
 
@@ -120,7 +127,7 @@ postRouter.post(`/edit/:postId`, (req, res) => {
 });
 
 //DELETE /my-posts/delete/:postId
-postRouter.delete("/delete/:postId", (req, res) => {
+postRouter.delete("/my-posts/delete/:postId", (req, res) => {
   console.log(`You have reached the delete route, please be carefull`);
   PostModel.findByIdAndDelete(req.params.postId)
     .then(() => {
