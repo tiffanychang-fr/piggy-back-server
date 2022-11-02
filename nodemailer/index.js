@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+require("dotenv").config();
 const emailMessage = ` <body>
 <h1>Congratulations you have a response 😁!</h1>
 <p>
@@ -22,8 +23,8 @@ async function main() {
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
-      user: "9b30a8c210e8fc",
-      pass: "68fc1d71fac9ad",
+      user: process.env.TEST_USER_EMAIL,
+      pass: process.env.TEST_USER_PW,
     },
   });
 
