@@ -1,5 +1,5 @@
-const nodemailer = require("nodemailer");
 require("dotenv").config();
+const nodemailer = require("nodemailer");
 const emailMessage = ` <body>
 <h1>Congratulations you have a response 😁!</h1>
 <p>
@@ -19,7 +19,9 @@ const emailMessage = ` <body>
 // async..await is not allowed in global scope, must use a wrapper
 async function main() {
   // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
+
+  //!TESTING TRANSPORTER
+  const transporter = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
@@ -28,14 +30,34 @@ async function main() {
     },
   });
 
+  //!TEST SEND EMAIL
   // send mail with defined transport object
   let info = await transporter.sendMail({
     from: '"Piggy Back 👻" <foo@example.com>', // sender address
     to: "bar@example.com, baz@example.com", // list of receivers
-    subject: "PiggyBack✔", // Subject line
+    subject: "PiggyBack ✔", // Subject line
     text: emailMessage.replace(/<[^>]*>/g, ""), // plain text body
     html: emailMessage, // html body
   });
+
+  //? PRODUCTION TRANSPORTER:
+  // const transporter = nodemailer.createTransport({
+  //   service: "gmail",
+  //   auth: {
+  //     user: process.env.PROD_USER_EMAIL,
+  //     pass: process.env.PROD_USER_PW,
+  //   },
+  // });
+
+  //? PRODUCTION SEND EMAIL
+  //send mail with defined transport object
+  // const info = await transporter.sendMail({
+  //   from: '"Gmail Piggy Back 📧" <piggyback611@gmail.com>', // sender address
+  //   to: "bar@example.com, baz@example.com", // list of receivers
+  //   subject: "PiggyBack✔", // Subject line
+  //   text: emailMessage.replace(/<[^>]*>/g, ""), // plain text body
+  //   html: emailMessage, // html body
+  // });
 
   console.log("Message sent: %s", info.messageId);
   // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
