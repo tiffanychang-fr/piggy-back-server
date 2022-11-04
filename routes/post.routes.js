@@ -76,7 +76,7 @@ postRouter.post("/my-posts/create", (req, res) => {
 });
 
 //GET /my-posts/details/:postId
-postRouter.get(`/details/:postId`, (req, res) => {
+postRouter.get(`/my-posts/details/:postId`, (req, res) => {
   console.log(`hello from the details page`);
 });
 
@@ -143,7 +143,6 @@ postRouter.post(`/my-posts/edit/:postId`, (req, res) => {
 
 //DELETE /my-posts/delete/:postId
 postRouter.delete("/my-posts/delete/:postId", (req, res) => {
-  console.log(`You have reached the delete route, please be carefull`);
   PostModel.findByIdAndDelete(req.params.postId)
     .then(() => {
       res

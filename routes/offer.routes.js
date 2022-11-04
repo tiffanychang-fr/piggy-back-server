@@ -105,4 +105,18 @@ offerRouter.post("/create-offer/:postId", (req, res) => {
     .catch((error) => console.log(error));
 });
 
+// DELETE /my-offers/delete/:offerId - Refuse an offer by deleting it
+offerRouter.delete("/my-offers/delete/:offerId", (req, res) => {
+  const { offerId } = req.params;
+  OfferModel.findByIdAndDelete(offerId)
+    .then(() => {
+      res
+        .status(200)
+        .json({ message: "Your post has been deleted succesfully." });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 module.exports = offerRouter;
