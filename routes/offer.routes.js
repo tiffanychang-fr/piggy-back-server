@@ -4,6 +4,40 @@ const OfferModel = require("../models/Offer.model");
 const PostModel = require("../models/Post.model");
 // const UserModel = require("../models/User.model");
 
+require("dotenv").config();
+const nodemailer = require("nodemailer");
+const emailMessage = ` <body>
+<h1>Congratulations you have a response 😁!</h1>
+<p>Hey you have received a offer on piggyback! Please check your account</p>
+<p>Send by nodemailer</p>
+</body>`;
+
+async function main() {
+  //? PRODUCTION TRANSPORTER:
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.PROD_USER_EMAIL,
+      pass: process.env.PROD_USER_PW,
+    },
+  });
+
+  //? PRODUCTION SEND EMAIL
+  // send mail with defined transport object
+  const info = await transporter.sendMail({
+    from: '"Gmail Piggy Back 📧" <piggyback611@gmail.com>', // sender address
+    to: process.env.PROD_RECEIVER_EMAIL, // list of receivers
+    subject: "PiggyBack✔", // Subject line
+    text: emailMessage.replace(/<[^>]*>/g, ""), // plain text body
+    html: emailMessage, // html body
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+  // Preview only available when sending through an Ethereal account
+}
+
 const offerRouter = Router();
 
 // GET /get-all-offers - Get all offers from the offer DB
@@ -63,6 +97,7 @@ offerRouter.post("/create-offer/:postId", (req, res) => {
         isAccepted: false,
       })
         .then((createdOffer) => {
+          main().catch(console.error);
           res.json(createdOffer);
         })
         .catch((error) => console.log(error));
