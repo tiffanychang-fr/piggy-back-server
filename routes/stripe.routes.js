@@ -180,7 +180,7 @@ stripeRouter.post("/stripe-success", async (req, res) => {
         });
 
         // set offer isAccepted into true
-        await OfferModel.findById(offerId, {
+        await OfferModel.findByIdAndUpdate(offerId, {
           $set: { isAccepted: true },
         });
 
